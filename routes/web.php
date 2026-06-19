@@ -33,3 +33,12 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     Route::get('/registrations', [DashboardController::class, 'registrations'])->name('admin.registrations.index');
     Route::get('/registrations/export', [DashboardController::class, 'export'])->name('admin.registrations.export');
 });
+
+// Cache Clearing Utility Route (for server testing and config clears)
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    
+    return 'Cache, config, and views cleared successfully!';
+});
