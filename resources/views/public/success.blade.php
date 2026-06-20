@@ -62,19 +62,8 @@
                         <p class="text-xs font-bold text-slate-700">{{ session('success_city', 'your chosen city') }}</p>
                     </div>
                 </div>
-                <div class="flex items-start gap-2.5">
-                    <i data-lucide="calendar" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
-                    <div>
-                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Event Duration</p>
-                        <p class="text-xs font-bold text-slate-700">7-Day Event</p>
-                    </div>
-                </div>
             </div>
         </div>
-
-        <p class="text-xs text-slate-400">
-            Please show this page or mention your name/email at the registration desk when arriving at the venue.
-        </p>
         
     </div>
 
