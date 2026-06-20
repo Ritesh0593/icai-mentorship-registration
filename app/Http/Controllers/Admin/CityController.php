@@ -14,11 +14,13 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities = City::withCount('registrations')
+        $cities = City::with(['category'])->withCount('registrations')
             ->orderBy('name')
             ->get();
 
-        return view('admin.cities.index', compact('cities'));
+        $categories = \App\Models\Category::orderBy('name')->get();
+
+        return view('admin.cities.index', compact('cities', 'categories'));
     }
 
     /**
@@ -28,10 +30,12 @@ class CityController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:cities,name',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         City::create([
             'name' => $request->name,
+            'category_id' => $request->category_id,
         ]);
 
         return redirect()->route('admin.cities.index')

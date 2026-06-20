@@ -72,6 +72,56 @@
         </div>
     @endif
 </div>
+
+<!-- Category Stats Section -->
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8">
+    <div>
+        <h4 class="font-bold text-base text-slate-800">Category-wise Summary</h4>
+        <p class="text-xs text-slate-500 mb-6">Overview of cities and registrations grouped by scale category</p>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-left">
+            <thead>
+                <tr class="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    <th class="px-6 py-4">Category</th>
+                    <th class="px-6 py-4">Scale Criteria (Range)</th>
+                    <th class="px-6 py-4 text-center">Total Cities</th>
+                    <th class="px-6 py-4 text-center">Total Registrations</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                @php
+                    $ranges = [
+                        'Micro' => '1 to 500',
+                        'Small' => '501 to 1000',
+                        'Medium' => '1001 to 2500',
+                        'Large' => '2501 to 5000',
+                        'Mega' => '5000>'
+                    ];
+                @endphp
+                @foreach($categoriesStats as $cat)
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="font-semibold text-slate-800">{{ $cat->name }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-xs font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-500">
+                                {{ $ranges[$cat->name] ?? 'Custom' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center font-medium text-slate-800">
+                            {{ $cat->cities_count }}
+                        </td>
+                        <td class="px-6 py-4 text-center font-bold text-indigo-600">
+                            {{ $cat->registrations_count }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
 
 @section('scripts')

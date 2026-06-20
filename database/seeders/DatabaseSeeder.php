@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\City;
 use App\Models\Registration;
 use Illuminate\Database\Seeder;
@@ -14,9 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Define some cities
+        // 1. Seed Categories
+        $categoriesList = ['Micro', 'Small', 'Medium', 'Large', 'Mega'];
+        $seededCategories = [];
+        foreach ($categoriesList as $catName) {
+            $seededCategories[] = Category::create([
+                'name' => $catName
+            ]);
+        }
+
+        // 2. Define Cities
         $cities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Pune', 'Chennai', 'Kolkata'];
 
+        // Forms config
         $categories = [
             'MSME Entrepreneur',
             'Startup Founder',
@@ -37,9 +48,13 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($cities as $cityName) {
+            // Pick a random category id
+            $randomCategory = $seededCategories[array_rand($seededCategories)];
+
             // Create City
             $city = City::create([
                 'name' => $cityName,
+                'category_id' => $randomCategory->id,
             ]);
 
             // Create between 5 to 25 random registrations for each city

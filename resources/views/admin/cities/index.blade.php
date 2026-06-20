@@ -25,6 +25,7 @@
                         <thead>
                             <tr class="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                                 <th class="px-6 py-4">City Name</th>
+                                <th class="px-6 py-4">Category</th>
                                 <th class="px-6 py-4">Registration Link (Encoded)</th>
                                 <th class="px-6 py-4 text-center">QR Code</th>
                                 <th class="px-6 py-4 text-right">Actions</th>
@@ -37,6 +38,13 @@
                                     <td class="px-6 py-4">
                                         <div class="font-semibold text-slate-800">{{ $city->name }}</div>
                                         <div class="text-xs text-slate-400 mt-0.5">{{ $city->registrations_count }} registrations</div>
+                                    </td>
+
+                                    <!-- Category -->
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                            {{ $city->category->name ?? 'N/A' }}
+                                        </span>
                                     </td>
                                     
                                     <!-- Registration URL -->
@@ -114,6 +122,25 @@
                            value="{{ old('name') }}"
                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all">
                     @error('name')
+                        <p class="text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="category_id" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Category Scale</label>
+                    <select name="category_id" id="category_id" required
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all">
+                        <option value="" disabled selected>-- Select Scale Category --</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
                         <p class="text-xs text-rose-500 mt-1.5 flex items-center gap-1">
                             <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
                             {{ $message }}

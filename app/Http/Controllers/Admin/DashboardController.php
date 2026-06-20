@@ -27,12 +27,16 @@ class DashboardController extends Controller
         $chartLabels = $citiesData->pluck('name')->toArray();
         $chartValues = $citiesData->pluck('registrations_count')->toArray();
 
+        // Fetch category-wise stats
+        $categoriesStats = \App\Models\Category::withCount(['cities', 'registrations'])->get();
+
         return view('admin.dashboard', compact(
             'totalCities',
             'totalRegistrations',
             'todayRegistrations',
             'chartLabels',
-            'chartValues'
+            'chartValues',
+            'categoriesStats'
         ));
     }
 

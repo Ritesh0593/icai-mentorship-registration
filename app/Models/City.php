@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class City extends Model
 {
-    protected $fillable = ['name', 'slug', 'qr_code_path'];
+    protected $fillable = ['name', 'slug', 'qr_code_path', 'category_id'];
 
     protected static function boot()
     {
@@ -27,6 +28,14 @@ class City extends Model
         static::created(function ($city) {
             $city->generateQrCode();
         });
+    }
+
+    /**
+     * Get the category that this city belongs to.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**
