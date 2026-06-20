@@ -51,10 +51,12 @@
                 <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                 Dashboard
             </a>
+            @if(session('admin_role') === 'admin')
             <a href="{{ route('admin.cities.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('admin.cities.index') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100' }}">
                 <i data-lucide="map-pin" class="w-4 h-4"></i>
                 Cities
             </a>
+            @endif
             <a href="{{ route('admin.registrations.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('admin.registrations.index') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/10' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100' }}">
                 <i data-lucide="users" class="w-4 h-4"></i>
                 Registrations
@@ -66,10 +68,10 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 font-semibold text-sm border border-indigo-500/20">
-                        A
+                        {{ session('admin_role') === 'admin' ? 'A' : 'C' }}
                     </div>
                     <div class="text-xs">
-                        <p class="font-medium text-slate-200">Administrator</p>
+                        <p class="font-medium text-slate-200">{{ session('admin_role') === 'admin' ? 'Administrator' : 'Client / Viewer' }}</p>
                         <p class="text-slate-500">Event Manager</p>
                     </div>
                 </div>

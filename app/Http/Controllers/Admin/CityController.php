@@ -14,6 +14,10 @@ class CityController extends Controller
      */
     public function index()
     {
+        if (session('admin_role') !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
         $cities = City::with(['category'])->withCount('registrations')
             ->orderBy('name')
             ->get();
@@ -28,6 +32,10 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
+        if (session('admin_role') !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255|unique:cities,name',
             'category_id' => 'required|exists:categories,id',
@@ -47,6 +55,10 @@ class CityController extends Controller
      */
     public function downloadQrCode(City $city)
     {
+        if (session('admin_role') !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
         $fileName = 'qrcode_' . $city->slug . '.svg';
         $filePath = 'qrcodes/' . $fileName;
 

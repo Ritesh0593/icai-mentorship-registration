@@ -27,11 +27,21 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Get password from environment, default to admin123
+        // Get passwords from environment
         $adminPassword = env('ADMIN_PASSWORD', 'admin123');
+        $clientPassword = env('CLIENT_PASSWORD', 'client123');
 
         if ($request->password === $adminPassword) {
-            session(['is_admin' => true]);
+            session([
+                'is_admin' => true,
+                'admin_role' => 'admin'
+            ]);
+            return redirect()->route('admin.dashboard');
+        } elseif ($request->password === $clientPassword) {
+            session([
+                'is_admin' => true,
+                'admin_role' => 'client'
+            ]);
             return redirect()->route('admin.dashboard');
         }
 

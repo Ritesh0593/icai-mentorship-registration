@@ -55,7 +55,7 @@
         <form action="{{ route('admin.login.submit') }}" method="POST" class="space-y-6">
             @csrf
             <div>
-                <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Admin Password</label>
+                <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Password</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
                         <i data-lucide="lock" class="w-4 h-4"></i>
