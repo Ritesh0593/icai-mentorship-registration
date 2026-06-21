@@ -61,8 +61,32 @@ Route::get('/db-migrate', function () {
 // Storage Link Utility Route (For environments without SSH access)
 Route::get('/storage-link', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return 'Storage link created successfully!';
+        $link = public_path('storage');
+        $target = storage_path('app/public');
+
+        // 1. If target directory doesn't exist, create it
+        if (!file_exists($target)) {
+            mkdir($target, 0755, true);
+        }
+
+        // 2. If link already exists (even if broken), delete it
+        if (file_exists($link) || is_link($link)) {
+            // Check if it is a link
+            if (is_link($link)) {
+                unlink($link);
+            } else {
+                // If it is a real directory (not a link), delete it recursively or rename it
+                // To be safe and simple, let's rename it to storage_old
+                rename($link, public_path('storage_old_' . time()));
+            }
+        }
+
+        // 3. Create symlink
+        if (symlink($target, $link)) {
+            return 'Storage link created successfully!';
+        }
+
+        return 'Failed to create storage link.';
     } catch (\Exception $e) {
         return 'Storage Link Error: ' . $e->getMessage();
     }
