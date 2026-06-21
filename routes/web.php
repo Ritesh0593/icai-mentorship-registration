@@ -29,6 +29,9 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     // City Management
     Route::get('/cities', [CityController::class, 'index'])->name('admin.cities.index');
     Route::post('/cities', [CityController::class, 'store'])->name('admin.cities.store');
+    Route::get('/cities/export', [CityController::class, 'exportCsv'])->name('admin.cities.export');
+    Route::get('/cities/download-all-qr', [CityController::class, 'downloadAllQrCodes'])->name('admin.cities.download-all-qr');
+    Route::post('/cities/bulk-upload', [CityController::class, 'bulkUpload'])->name('admin.cities.bulk-upload');
     Route::get('/cities/{city}/download-qr', [CityController::class, 'downloadQrCode'])->name('admin.cities.download-qr');
 
     // Registrations Management

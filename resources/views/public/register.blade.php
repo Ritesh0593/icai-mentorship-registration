@@ -50,7 +50,7 @@
                 </h1>
                 <p class="text-slate-500 text-[6px] sm:text-[10px] font-semibold leading-none">(Set up by an Act of Parliament)</p>
                 <p class="text-brandBlue font-extrabold text-[8px] sm:text-[12px] leading-tight mt-0.5">
-                    MSME & Startup Mentorship 2026 by ICAI
+                   MSME & Startup Financial Advisory 2026 by ICAI
                 </p>
                 <p class="text-brandBlue font-extrabold text-[8px] sm:text-[12px] leading-tight">
                     Registration Drive @ MSME Mahotsav 2026

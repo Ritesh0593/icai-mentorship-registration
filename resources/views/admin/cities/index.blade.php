@@ -9,14 +9,22 @@
     <!-- Left 2 Columns: Cities List -->
     <div class="lg:col-span-2">
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h4 class="font-bold text-base text-slate-800">Cities Database</h4>
                     <p class="text-xs text-slate-500">List of cities, registration links, and QR codes</p>
                 </div>
-                <span class="text-xs bg-slate-100 px-3 py-1 rounded-full text-slate-600 font-medium">
-                    {{ $cities->count() }} Cities
-                </span>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-slate-100 px-3 py-1.5 rounded-lg text-slate-600 font-semibold shrink-0">
+                        {{ $cities->count() }} Cities
+                    </span>
+                    <a href="{{ route('admin.cities.export') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all shadow-sm">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+                    </a>
+                    <a href="{{ route('admin.cities.download-all-qr') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all shadow-sm">
+                        <i data-lucide="file-archive" class="w-3.5 h-3.5"></i> Download All QRs (ZIP)
+                    </a>
+                </div>
             </div>
 
             @if($cities->count() > 0)
@@ -108,9 +116,11 @@
         </div>
     </div>
 
-    <!-- Right 1 Column: Create City Form -->
-    <div class="lg:col-span-1">
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sticky top-8">
+    <!-- Right 1 Column: Create & Bulk Upload Forms -->
+    <div class="lg:col-span-1 space-y-8">
+        
+        <!-- Create Single City Form -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
             <h4 class="font-bold text-base text-slate-800 mb-1">Create City Link</h4>
             <p class="text-xs text-slate-500 mb-6">Generates a dynamic URL and a QR Code instantly.</p>
 
@@ -153,6 +163,43 @@
                 </button>
             </form>
         </div>
+
+        <!-- Bulk Upload Cities Form -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <h4 class="font-bold text-base text-slate-800 mb-1">Bulk Import Cities</h4>
+            <p class="text-xs text-slate-500 mb-4">Upload a CSV file containing multiple cities and categories.</p>
+
+            <form action="{{ route('admin.cities.bulk-upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                @csrf
+                <div>
+                    <label for="csv_file" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Upload CSV File*</label>
+                    <input type="file" name="csv_file" id="csv_file" required accept=".csv,text/csv"
+                           class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 transition-all">
+                    @error('csv_file')
+                        <p class="text-xs text-rose-500 mt-1.5 flex items-center gap-1">
+                            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div class="bg-slate-50 border border-slate-100 p-3 rounded-xl">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">CSV Format / Columns:</p>
+                    <code class="text-[10px] text-slate-600 block bg-slate-100 px-2 py-1 rounded font-mono">
+                        CityName,CategoryScale<br>
+                        Aligarh,Small<br>
+                        Mumbai,Mega<br>
+                        Delhi,Mega
+                    </code>
+                    <p class="text-[9px] text-slate-400 mt-1.5">Note: Headers are skipped automatically. Scale options: Micro, Small, Medium, Large, Mega (default: Micro).</p>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium text-sm transition-all shadow-md shadow-emerald-600/10 hover:shadow-emerald-600/20 active:scale-[0.98] flex items-center justify-center gap-2">
+                    <i data-lucide="upload-cloud" class="w-4 h-4"></i> Bulk Upload & Generate
+                </button>
+            </form>
+        </div>
+
     </div>
 </div>
 @endsection
