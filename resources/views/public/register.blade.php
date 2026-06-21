@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MSME & Startup Mentorship Registration - {{ $city->name }}</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,7 +105,7 @@
                                     Verify OTP
                                 </button>
                             </div>
-                            <p class="text-[9px] text-slate-400">For testing: Enter <strong class="text-slate-600">123456</strong> to verify.</p>
+                            <p class="text-[9px] text-slate-400">Please check your email inbox for the verification code.</p>
                         </div>
 
                         <!-- Success Alert for OTP -->
@@ -251,26 +252,79 @@
             sendOtpBtn.disabled = true;
             otpBtnText.innerHTML = "Sending...";
             
-            setTimeout(() => {
-                document.getElementById('otpInputGroup').classList.remove('hidden');
-                sendOtpBtn.classList.remove('bg-[#F05A28]', 'hover:bg-orange-600');
-                sendOtpBtn.classList.add('bg-slate-400');
-                otpBtnText.innerHTML = "OTP Sent";
-            }, 800);
+            fetch("{{ route('registration.send-otp') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    email: emailInput.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('otpInputGroup').classList.remove('hidden');
+                    sendOtpBtn.classList.remove('bg-[#F05A28]', 'hover:bg-orange-600');
+                    sendOtpBtn.classList.add('bg-slate-400');
+                    otpBtnText.innerHTML = "OTP Sent";
+                    
+                    if (data.message.includes('not configured')) {
+                        alert(data.message);
+                    }
+                } else {
+                    alert(data.message || 'Error sending OTP. Please try again.');
+                    sendOtpBtn.disabled = false;
+                    otpBtnText.innerHTML = "Send OTP";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                sendOtpBtn.disabled = false;
+                otpBtnText.innerHTML = "Send OTP";
+            });
         }
 
         function handleVerifyOtp() {
+            const emailInput = document.getElementById('email');
             const otpValue = document.getElementById('otp').value.trim();
             
-            if (otpValue === '123456') {
-                document.getElementById('otp_verified').value = '1';
-                document.getElementById('otpInputGroup').classList.add('hidden');
-                document.getElementById('sendOtpBtn').classList.add('hidden');
-                document.getElementById('otpSuccessAlert').classList.remove('hidden');
-                unlockForm();
-            } else {
-                alert('Invalid OTP. Please enter 123456 to test.');
+            if (otpValue.length !== 6) {
+                alert('Please enter a 6-digit OTP code.');
+                return;
             }
+
+            fetch("{{ route('registration.verify-otp') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    email: emailInput.value,
+                    otp: otpValue
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('otp_verified').value = '1';
+                    document.getElementById('otpInputGroup').classList.add('hidden');
+                    document.getElementById('sendOtpBtn').classList.add('hidden');
+                    document.getElementById('otpSuccessAlert').classList.remove('hidden');
+                    document.getElementById('email').readOnly = true;
+                    document.getElementById('email').classList.add('bg-slate-50', 'text-slate-500', 'cursor-not-allowed');
+                    unlockForm();
+                } else {
+                    alert(data.message || 'Invalid OTP code. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
         }
 
         function unlockForm() {

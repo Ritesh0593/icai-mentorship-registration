@@ -11,6 +11,8 @@ Route::redirect('/', '/admin');
 
 // Public Registration Routes
 Route::get('/register/success', [RegistrationController::class, 'success'])->name('registration.success');
+Route::post('/register/send-otp', [RegistrationController::class, 'sendOtp'])->name('registration.send-otp');
+Route::post('/register/verify-otp', [RegistrationController::class, 'verifyOtp'])->name('registration.verify-otp');
 Route::get('/register/{slug}', [RegistrationController::class, 'show'])->name('registration.show');
 Route::post('/register/{slug}', [RegistrationController::class, 'store'])->name('registration.store');
 
