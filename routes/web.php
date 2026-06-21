@@ -44,3 +44,26 @@ Route::get('/clear-cache', function () {
     
     return 'Cache, config, and views cleared successfully!';
 });
+
+// Database Migration & Seeding Utility Route (For environments without SSH access)
+Route::get('/db-migrate', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
+            '--force' => true,
+            '--seed' => true
+        ]);
+        return 'Database tables fresh-migrated and seeded successfully!';
+    } catch (\Exception $e) {
+        return 'Migration Error: ' . $e->getMessage();
+    }
+});
+
+// Storage Link Utility Route (For environments without SSH access)
+Route::get('/storage-link', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return 'Storage link created successfully!';
+    } catch (\Exception $e) {
+        return 'Storage Link Error: ' . $e->getMessage();
+    }
+});
