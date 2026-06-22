@@ -39,6 +39,7 @@ class RegistrationController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
+            'resident_city' => 'required|string|max:255',
             'participant_category' => 'required|string|max:255',
             'mentorship_area' => 'required|string|max:255',
             'otp_verified' => 'required|in:1',
@@ -53,6 +54,7 @@ class RegistrationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'resident_city' => $request->resident_city,
             'participant_category' => $request->participant_category,
             'mentorship_area' => $request->mentorship_area,
             'otp_verified' => true

@@ -12,6 +12,7 @@ class Registration extends Model
         'name',
         'email',
         'phone',
+        'resident_city',
         'participant_category',
         'mentorship_area',
         'otp_verified'

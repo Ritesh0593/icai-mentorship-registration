@@ -102,13 +102,14 @@ class DashboardController extends Controller
             fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
 
             // CSV Headers
-            fputcsv($handle, ['ID', 'City', 'Name', 'Email', 'Phone', 'Participant Category', 'Area of Mentorship', 'Registration Date', 'Registration Link', 'QR Code Link']);
+            fputcsv($handle, ['ID', 'Resident City', 'Event City', 'Name', 'Email', 'Phone', 'Participant Category', 'Area of Mentorship', 'Registration Date', 'Registration Link', 'QR Code Link']);
 
             // Chunk database queries for memory optimization
             $query->chunk(500, function ($registrations) use ($handle) {
                 foreach ($registrations as $reg) {
                     fputcsv($handle, [
                         $reg->id,
+                        $reg->resident_city ?? 'N/A',
                         $reg->city->name ?? 'Deleted City',
                         $reg->name,
                         $reg->email,

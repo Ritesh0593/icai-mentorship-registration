@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
                     'name' => $this->getRandomName(),
                     'email' => strtolower(Str::random(8)) . '@example.com',
                     'phone' => '+91 ' . rand(70000, 99999) . ' ' . rand(10000, 99999),
+                    'resident_city' => $cities[array_rand($cities)],
                     'participant_category' => $categories[array_rand($categories)],
                     'mentorship_area' => $areas[array_rand($areas)],
                     'otp_verified' => true

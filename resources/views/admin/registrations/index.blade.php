@@ -75,8 +75,8 @@
                         <th class="px-6 py-4">ID</th>
                         <th class="px-6 py-4">Attendee Name</th>
                         <th class="px-6 py-4">Contact Info</th>
-                        <th class="px-6 py-4">City</th>
-                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4">City (Resident / Event)</th>
+                        <th class="px-6 py-4">Participant Category</th>
                         <th class="px-6 py-4">Mentorship Interest</th>
                         <th class="px-6 py-4 text-right">Registration Date</th>
                     </tr>
@@ -91,10 +91,8 @@
                                 <div class="text-slate-400 text-xs mt-0.5">{{ $reg->phone }}</div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
-                                    <span class="w-1.5 h-1.5 bg-indigo-600 rounded-full"></span>
-                                    {{ $reg->city->name ?? 'N/A' }}
-                                </span>
+                                <div class="font-semibold text-slate-800 text-xs">{{ $reg->resident_city ?? 'N/A' }}</div>
+                                <div class="text-[10px] text-slate-400 mt-0.5">Event: {{ $reg->city->name ?? 'N/A' }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">

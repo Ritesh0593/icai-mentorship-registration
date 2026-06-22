@@ -50,7 +50,7 @@
                 </h1>
                 <p class="text-slate-500 text-[6px] sm:text-[10px] font-semibold leading-none">(Set up by an Act of Parliament)</p>
                 <p class="text-brandBlue font-extrabold text-[8px] sm:text-[12px] leading-tight mt-0.5">
-                   MSME & Startup Financial Advisory 2026 by ICAI
+                    MSME & Startup Financial Advisory 2026 organized by MSME & Startup Committee, ICAI
                 </p>
                 <p class="text-brandBlue font-extrabold text-[8px] sm:text-[12px] leading-tight">
                     Registration Drive @ MSME Mahotsav 2026
@@ -92,6 +92,10 @@
                             @error('email')
                                 <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
                             @enderror
+                            <p class="text-[10px] text-slate-400 mt-1.5 flex items-center gap-1">
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400"></i>
+                                Please check your junk/spam email folder also.
+                            </p>
                         </div>
 
                         <!-- OTP Input Container (Hidden initially) -->
@@ -147,9 +151,12 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-500 mb-1">City*</label>
-                                    <input type="text" readonly value="{{ $city->name }}"
-                                           class="w-full px-3 py-1.5 border border-slate-200 bg-slate-50 rounded text-slate-500 text-sm focus:outline-none cursor-not-allowed">
+                                    <label for="resident_city" class="block text-xs font-semibold text-slate-500 mb-1">City*</label>
+                                    <input type="text" name="resident_city" id="resident_city" placeholder="e.g. Noida" value="{{ old('resident_city') }}"
+                                           class="w-full px-3 py-1.5 border border-slate-300 rounded text-slate-800 text-sm focus:outline-none focus:border-brandBlue transition-all">
+                                    @error('resident_city')
+                                        <p class="text-[11px] text-rose-500 mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -332,6 +339,7 @@
             wrapper.classList.remove('opacity-50', 'pointer-events-none');
             document.getElementById('name').required = true;
             document.getElementById('phone').required = true;
+            document.getElementById('resident_city').required = true;
             document.getElementById('participant_category').required = true;
             document.getElementById('mentorship_area').required = true;
         }
